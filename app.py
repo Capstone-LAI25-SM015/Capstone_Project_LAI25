@@ -5,6 +5,13 @@ from tensorflow.keras.preprocessing import image
 from PIL import Image, UnidentifiedImageError
 import pickle
 
+# --- HARUS di bagian paling atas ---
+st.set_page_config(
+    page_title="Prediksi Penyakit Tanaman Pertanian",
+    page_icon="🌿",
+    layout="centered"
+)
+
 # --- Load Model dan Label Map ---
 model_path = 'Model.h5'
 label_map_path = 'label_map.pkl'
@@ -55,12 +62,6 @@ def predict_disease(img):
     return idx_to_label[predicted_class], confidence
 
 # --- Streamlit UI ---
-st.set_page_config(
-    page_title="Prediksi Penyakit Tanaman Pertanian",
-    page_icon="🌿",
-    layout="centered"
-)
-
 st.title("🌿🔍 Prediksi Penyakit Tanaman Pertanian")
 st.markdown("Upload gambar daun tanaman, dan model akan memprediksi penyakitnya.")
 st.markdown("---")
