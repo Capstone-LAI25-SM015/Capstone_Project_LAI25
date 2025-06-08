@@ -16,15 +16,14 @@ st.set_page_config(
 model_path = 'Model.h5'
 label_map_path = 'label_map.pkl'
 
-# Load model dengan try-except
+# Load model tanpa pesan sukses
 try:
     model = tf.keras.models.load_model(model_path)
-    st.success("Model berhasil dimuat!")
 except Exception as e:
     st.error(f"Gagal load model: {e}")
     st.stop()
 
-# Load label map dengan validasi
+# Load label map tanpa pesan sukses
 try:
     with open(label_map_path, 'rb') as f:
         label_map = pickle.load(f)
@@ -35,7 +34,6 @@ try:
     
     # Buat mapping index ke label
     idx_to_label = {v: k for k, v in label_map.items()}
-    st.success(f"Label map berhasil dimuat ({len(label_map)} kelas)")
 except Exception as e:
     st.error(f"Gagal load label map: {e}")
     st.stop()
@@ -47,7 +45,7 @@ def predict_disease(img):
     img_array = np.expand_dims(img_array, axis=0)
     img_array = img_array / 255.0
 
-    prediction = model.predict(img_array)
+    prediction = model.predict(img_array, verbose=0)  # nonaktifkan logging prediksi
     predicted_class = np.argmax(prediction, axis=1)[0]
     confidence = np.max(prediction)
 
