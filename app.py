@@ -7,7 +7,7 @@ import pickle
 
 # --- HARUS di bagian paling atas ---
 st.set_page_config(
-    page_title="Prediksi Penyakit Tanaman Pertanian",
+    page_title="Prediksi Penyakit Tanaman",
     page_icon="🌿",
     layout="centered"
 )
