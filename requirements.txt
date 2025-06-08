@@ -1,7 +1,7 @@
-streamlit==1.24.1
 tensorflow==2.10.0
-protobuf>=3.20,<5
-rich>=10.11.0,<14
-typing-extensions>=3.6.6,<4.6.0
+streamlit==1.22.0
+protobuf==3.19.4
+rich==13.9.4
+typing-extensions==4.5.0
 numpy==1.23.0
 pillow==9.0.0
