@@ -6,7 +6,7 @@ from PIL import Image, UnidentifiedImageError
 import pickle
 
 # --- Load Model dan Label Map ---
-model_path = 'final.h5'
+model_path = 'Model.h5'
 label_map_path = 'label_map.pkl'
 
 # Load model dengan try-except
