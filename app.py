@@ -12,6 +12,7 @@ label_map_path = 'label_map.pkl'
 # Load model dengan try-except
 try:
     model = tf.keras.models.load_model(model_path)
+    st.success("Model berhasil dimuat!")
 except Exception as e:
     st.error(f"Gagal load model: {e}")
     st.stop()
@@ -20,13 +21,17 @@ except Exception as e:
 try:
     with open(label_map_path, 'rb') as f:
         label_map = pickle.load(f)
+    
+    # Validasi format label map
     if not isinstance(label_map, dict) or len(label_map) == 0:
         raise ValueError("Label map tidak valid atau kosong")
+    
+    # Buat mapping index ke label
+    idx_to_label = {v: k for k, v in label_map.items()}
+    st.success(f"Label map berhasil dimuat ({len(label_map)} kelas)")
 except Exception as e:
     st.error(f"Gagal load label map: {e}")
     st.stop()
-
-idx_to_label = {v: k for k, v in label_map.items()}
 
 # --- Fungsi Prediksi ---
 def predict_disease(img):
@@ -39,35 +44,71 @@ def predict_disease(img):
     predicted_class = np.argmax(prediction, axis=1)[0]
     confidence = np.max(prediction)
 
+    # Cek jika kelas prediksi ada di mapping
     if predicted_class not in idx_to_label:
-        raise ValueError(f"Predicted class {predicted_class} tidak ada di label map")
+        available_classes = ", ".join(map(str, idx_to_label.keys()))
+        raise ValueError(
+            f"Predicted class {predicted_class} tidak ada di label map. "
+            f"Kelas yang tersedia: {available_classes}"
+        )
 
     return idx_to_label[predicted_class], confidence
 
 # --- Streamlit UI ---
-st.set_page_config(page_title="Prediksi Penyakit Tanaman Pertanian", layout="centered")
+st.set_page_config(
+    page_title="Prediksi Penyakit Tanaman Pertanian",
+    page_icon="🌿",
+    layout="centered"
+)
 
-st.title("🧠🔍 Prediksi Penyakit Tanaman Pertanian")
-st.markdown("Upload gambar Tanaman, dan model akan memprediksi penyakitnya.")
+st.title("🌿🔍 Prediksi Penyakit Tanaman Pertanian")
+st.markdown("Upload gambar daun tanaman, dan model akan memprediksi penyakitnya.")
+st.markdown("---")
 
-uploaded_file = st.file_uploader("Pilih gambar daun...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader(
+    "Pilih gambar daun...", 
+    type=["jpg", "jpeg", "png"],
+    accept_multiple_files=False
+)
 
 if uploaded_file is not None:
     try:
         img = Image.open(uploaded_file)
+        
+        # Tampilkan gambar dengan kompatibilitas versi
+        try:
+            st.image(img, caption="Gambar yang diupload", use_container_width=True)
+        except TypeError:
+            # Fallback untuk versi Streamlit lawas
+            st.image(img, caption="Gambar yang diupload", width=300)
+            
     except UnidentifiedImageError:
-        st.error("File yang diupload bukan gambar yang valid.")
+        st.error("File yang diupload bukan gambar yang valid. Mohon upload file JPG, JPEG, atau PNG.")
         st.stop()
     except Exception as e:
-        st.error(f"Gagal membuka gambar: {e}")
+        st.error(f"Gagal memproses gambar: {e}")
         st.stop()
 
-    st.image(img, caption="Gambar yang diupload", use_container_width=True)
-
-    if st.button("Prediksi"):
-        try:
-            label, confidence = predict_disease(img)
-            st.success(f"🌿 Prediksi: **{label}**")
-            st.info(f"📊 Akurasi prediksi: {confidence*100:.2f}%")
-        except Exception as e:
-            st.error(f"Error saat prediksi: {e}")
+    if st.button("Prediksi", type="primary"):
+        with st.spinner("Menganalisis gambar..."):
+            try:
+                label, confidence = predict_disease(img)
+                
+                # Tampilkan hasil dengan format menarik
+                st.success(f"**Hasil Prediksi:** {label}")
+                st.metric(
+                    label="Tingkat Akurasi", 
+                    value=f"{confidence*100:.2f}%",
+                    delta="tinggi" if confidence > 0.75 else "sedang"
+                )
+                
+                # Tampilkan emoji sesuai hasil
+                if "sehat" in label.lower():
+                    st.balloons()
+                    st.success("🎉 Tanaman sehat! 🎉")
+                else:
+                    st.warning("⚠️ Terdeteksi penyakit! Perlu penanganan.")
+                    
+            except Exception as e:
+                st.error(f"Error saat prediksi: {str(e)}")
+                st.error("Silakan coba dengan gambar lain atau hubungi support.")
