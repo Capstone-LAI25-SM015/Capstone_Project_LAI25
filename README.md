@@ -103,9 +103,28 @@ Terong
 
 ## Modeling
 
-**Model yg diujikan :**
+Proyek ini menggunakan arsitektur MobileNetV1 yang dikenal ringan dan efisien untuk diterapkan pada perangkat dengan keterbatasan komputasi. 
 
-MobileNetv1 
+**Tahapan Modeling:**
+1. Image Augmentation:
+   - Gambar diskalakan dengan `rescale=1./255`
+   - Diberikan augmentasi: rotasi, geser lebar/tinggi, shearing, zoom, dan horizontal flip, untuk meningkatkan generalisasi model.
+   - Ukuran gambar diubah menjadi (224, 224) piksel agar sesuai dengan input MobileNet.
+
+2. Data Generator:
+   - Menggunakan ImageDataGenerator dari Keras untuk training, validation, dan testing.
+   - Batch size: 32
+
+3. Transfer Learning:
+   - Menggunakan arsitektur dasar MobileNetV1.
+   - Tambahan layer:
+     - GlobalAveragePooling2D
+     - Fully Connected (Dense) dengan 31 output dan fungsi aktivasi softmax.
+    
+4. Training:
+   - Optimizer: Adam
+   - Loss Function: categorical_crossentropy
+   - Epoch: 200
 
 ## Evaluation
 
@@ -113,7 +132,6 @@ MobileNetv1
 
 **MobileNetv1** 
 
-Batch size : 32
 | Model             | precision |  recall | f1-score |
 | ----------------- | --------- | ------- | -------- |
 | accuracy          |           |         |   0.82   |
