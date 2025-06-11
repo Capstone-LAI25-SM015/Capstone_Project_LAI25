@@ -124,6 +124,7 @@ Proyek ini menggunakan arsitektur MobileNetV1 yang dikenal ringan dan efisien un
 4. Training:
    - Optimizer: Adam
    - Loss Function: categorical_crossentropy
+   - Menggunakan callbacks: `callbacks=[earlystop_callback]`
    - Epoch: 200
 
 ## Evaluation
