@@ -105,13 +105,13 @@ Terong
 
 **Model yg diujikan :**
 
-MobileNet 
+MobileNetv1 
 
 ## Evaluation
 
 **Hasil Evaluasi model :**
 
-**MobileNet** 
+**MobileNetv1** 
 
 Batch size : 32
 | Model             | precision |  recall | f1-score |
