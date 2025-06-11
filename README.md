@@ -122,8 +122,35 @@ Batch size : 32
 
 **Hasil Deploy**
 
-Sistem deteksi penyakit daun telah berhasil di-deploy menggunakan Streamlit Cloud dan dapat diakses melalui link ini [Streamlit](https://deteksipenyakittanaman.streamlit.app/). Gambar di bawah ini adalah contoh hasil penggunaan sistem tersebut.
-![hasil streamlit](https://i.ibb.co/MxrqJ2Gn/Whats-App-Image-2025-06-09-at-21-09-45-922da285.jpg) 
+Untuk mempermudah para petani dan pengguna umum dalam mendeteksi penyakit daun tanaman, kami telah menyediakan aplikasi berbasis web yaitu Streamlit Cloud yang dapat diakses secara gratis melalui internet.
+Berikut adalah langkah-langkah penggunaannya:
+1. Buka Aplikasi
+   Akses aplikasi deteksi melalui tautan berikut:
+   
+   ```
+   https://deteksipenyakittanaman.streamlit.app/
+   ```
+   (Tautan ini akan diarahkan langsung ke aplikasi deteksi penyakit daun berbasis gambar.)
+   
+2. Unggah Gambar Daun
+   - Klik tombol "Browse files"
+   - Pilih gambar daun tanaman dari galeri
+     
+3. Lihat Hasil Deteksi
+
+   Setelah gambar diunggah:
+   - Sistem akan menampilkan jenis penyakit
+   - Menampilkan tingkat akurasi prediksi
+   - Jika daun sehat, akan muncul keterangan seperti: “Healthy Leaf”
+  
+5. Peringatan Dini
+
+   Jika terdeteksi gejala penyakit:
+   - Sistem akan memberikan peringatan dini
+   - Anda bisa mengambil tindakan lebih lanjut seperti menyemprot pestisida atau berkonsultasi dengan penyuluh pertanian
+   
+Gambar di bawah ini adalah contoh hasil penggunaan sistem tersebut.
+![hasil streamlit](https://i.ibb.co/B5zgyNvh/Whats-App-Image-2025-06-11-at-15-07-56-d2f8e7a5.jpg) 
 
 
 ## Conclusion
